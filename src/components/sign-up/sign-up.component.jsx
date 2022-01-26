@@ -21,14 +21,15 @@ class SignUp extends React.Component {
   handleSubmit = async (event) => {
     event.preventDefault();
     const { displayName, email, password, confirmPassword } = this.state;
+    console.log('input user details ', this.state);
     if (password !== confirmPassword) {
       alert(' confirm password shoud be same');
       return;
     }
     try {
       const { user } = await auth.createUserWithEmailAndPassword(email, password);
+      //console.log(user);
       await createUserProfileDocument(user, { displayName });
-
       this.setState({
         displayName: '',
         email: '',
@@ -77,13 +78,14 @@ class SignUp extends React.Component {
           />
           <FormInput
             type='password'
-            name='confirm password'
+            name='confirmPassword'
             value={confirmPassword}
             onChange={this.handleChange}
             label='confirm password'
             reuired
           />
-          <CustomButton type='submit'> Sign up</CustomButton>
+
+          <CustomButton type='submit'>Sign up</CustomButton>
         </form>
       </div>
     );

@@ -31,7 +31,7 @@ class App extends React.Component {
         // call this function by passing snapShotUserData into this
         // this function returned a promise of snapShotUserData
         // this is same data receivedData=userRef
-        console.log(receivedData);
+        //console.log(receivedData);
 
         /* ➖➖➖to store Data to app state ➖➖➖ */
 
@@ -39,14 +39,13 @@ class App extends React.Component {
         // as snapShot already has only id property ,not any other informaation exists on it.
         // to get other information we use .get() method on it.
 
-        receivedData.onSnapshot(
-          (snapShot) => {
-            this.setState({ currentUser: { id: snapShot.id, ...snapShot.data() } });
-          },
-          () => console.log(this.setState.currentUser)
-        );
+        receivedData.onSnapshot((snapShot) => {
+          this.setState({ currentUser: { id: snapShot.id, ...snapShot.data() } });
+          console.log('logged in user');
+          console.log(this.state.currentUser.displayName);
+        });
       } else {
-        // if user sinout then it receive Null
+        //if user sinout then it receive Null
         this.setState({ currentUser: userDataFromAuthState });
       }
     });

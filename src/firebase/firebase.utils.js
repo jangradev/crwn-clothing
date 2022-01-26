@@ -40,7 +40,7 @@ export const createUserProfileDocument = async (
   userDataFromAuthState,
   additionalData
 ) => {
-  console.log(userDataFromAuthState);
+  //console.log(userDataFromAuthState);
 
   // all user details that are not saved to cloud
   // ➖➖➖condition 1 ➖➖➖
@@ -58,7 +58,7 @@ export const createUserProfileDocument = async (
   if SnapShot exists property is false ,then take user data and upload to cloud */
 
   const userRef = firestore.doc(`user/${userDataFromAuthState.uid}`);
-  console.log(userRef);
+  //console.log(userRef);
 
   // this is collection reference not item snapshot
   // get DocumentReference from user UID property on user Data
@@ -67,7 +67,7 @@ export const createUserProfileDocument = async (
   // to ensure data on server is availbable or not.
 
   const snapShotUserData = await userRef.get();
-  console.log(snapShotUserData);
+  //console.log(snapShotUserData);
 
   /* if DocumentSnapshot.exists=false then create user data and upload */
 
