@@ -2,11 +2,10 @@
   height: 70px;
   width: auto;
   display: flex;
-
-  justify-content: space-between;
+  justify-content: space-around;
 
   .options {
-    margin-left: 100px;
+    margin-left: 200px;
     display: flex;
     align-items: flex-end;
     .option {

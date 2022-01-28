@@ -1,6 +1,6 @@
 import './App.css';
 import HomePage from './pages/homepage/homepage.component.jsx';
-import { Route, Switch } from 'react-router-dom';
+import { Redirect, Route, Switch } from 'react-router-dom';
 import ShopPage from './pages/shop/shop.component';
 import Header from './components/header/header.component';
 import SignInSignOut from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
@@ -14,20 +14,21 @@ class App extends React.Component {
   unsubscribedFromAuth = null;
   //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
   componentDidMount() {
-    const { setCurrentUser } = this.props;
+    const { setCurrentUserOnProps } = this.props;
+    console.log(typeof setCurrentUserOnProps);
 
     this.unsubscribedFromAuth = auth.onAuthStateChanged(async (userDataFromAuthState) => {
       if (userDataFromAuthState) {
         const receivedData = await createUserProfileDocument(userDataFromAuthState);
 
         receivedData.onSnapshot((snapShot) => {
-          setCurrentUser({
+          setCurrentUserOnProps({
             id: snapShot.id,
             ...snapShot.data(),
           });
         });
       } else {
-        setCurrentUser(userDataFromAuthState);
+        setCurrentUserOnProps(userDataFromAuthState);
       }
     });
   }
@@ -43,14 +44,28 @@ class App extends React.Component {
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/login' component={SignInSignOut} />
+          <Route
+            exact
+            path='/login'
+            render={() =>
+              this.props.currentUserOnProps ? <Redirect to='/' /> : <SignInSignOut />
+            }
+          />
         </Switch>
       </div>
     );
   }
 }
 //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+const mapStateToProps = (state) => {
+  //console.log(state);
+  return {
+    currentUserOnProps: state.user.currentUser,
+  };
+};
+
+//➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+  setCurrentUserOnProps: (user) => dispatch(setCurrentUser(user)),
 });
-export default connect(null, mapDispatchToProps)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);
