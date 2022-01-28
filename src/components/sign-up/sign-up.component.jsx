@@ -58,7 +58,6 @@ class SignUp extends React.Component {
             value={displayName}
             onChange={this.handleChange}
             label='Display Name'
-            reuired
           />
           <FormInput
             type='email'
@@ -85,7 +84,9 @@ class SignUp extends React.Component {
             reuired
           />
 
-          <CustomButton type='submit'>Sign up</CustomButton>
+          <CustomButton type='submit' fromSignUpComponent={'hello'}>
+            Sign up
+          </CustomButton>
         </form>
       </div>
     );

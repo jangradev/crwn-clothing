@@ -7,62 +7,39 @@ import SignInSignOut from './pages/sign-in-and-sign-up/sign-in-and-sign-up.compo
 import { auth } from './firebase/firebase.utils';
 import React from 'react';
 import { createUserProfileDocument } from '../src/firebase/firebase.utils';
-
+import { setCurrentUser } from './redux/user/user.actions';
+import { connect } from 'react-redux';
 //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
 class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      currentUser: null,
-    };
-  }
-
   unsubscribedFromAuth = null;
-
   //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-  // userDataFromAuthState will be Null if sinout
-
   componentDidMount() {
+    const { setCurrentUser } = this.props;
+
     this.unsubscribedFromAuth = auth.onAuthStateChanged(async (userDataFromAuthState) => {
       if (userDataFromAuthState) {
         const receivedData = await createUserProfileDocument(userDataFromAuthState);
 
-        // call this function by passing snapShotUserData into this
-        // this function returned a promise of snapShotUserData
-        // this is same data receivedData=userRef
-        //console.log(receivedData);
-
-        /* ➖➖➖to store Data to app state ➖➖➖ */
-
-        // .onSnapshot() method set to DocumentReference object to get realTime update of user data
-        // as snapShot already has only id property ,not any other informaation exists on it.
-        // to get other information we use .get() method on it.
-
         receivedData.onSnapshot((snapShot) => {
-          this.setState({ currentUser: { id: snapShot.id, ...snapShot.data() } });
-          console.log('logged in user');
-          console.log(this.state.currentUser.displayName);
+          setCurrentUser({
+            id: snapShot.id,
+            ...snapShot.data(),
+          });
         });
       } else {
-        //if user sinout then it receive Null
-        this.setState({ currentUser: userDataFromAuthState });
+        setCurrentUser(userDataFromAuthState);
       }
     });
   }
-
   //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
   componentWillUnmount() {
     this.unsubscribedFromAuth();
     console.log('log out');
   }
-  //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-
   render() {
     return (
       <div>
-        <Header currentUser={this.state.currentUser} />
+        <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
@@ -72,5 +49,8 @@ class App extends React.Component {
     );
   }
 }
-
-export default App;
+//➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default connect(null, mapDispatchToProps)(App);
