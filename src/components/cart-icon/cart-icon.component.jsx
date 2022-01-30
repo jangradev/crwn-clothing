@@ -5,10 +5,10 @@ import './cart-icon.styles.scss';
 
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
-const CartIcon = (state) => {
-  console.log(state);
+const CartIcon = ({ toggleCartHiddenOnProps }) => {
+  console.log(toggleCartHiddenOnProps);
   return (
-    <div className='cart-icon' onClick={state.toggleCartHidden}>
+    <div className='cart-icon' onClick={toggleCartHiddenOnProps}>
       <ShoppingIcon className='shopping-icon' />
       <span className='item-count'>0</span>
     </div>
