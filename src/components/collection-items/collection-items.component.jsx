@@ -9,7 +9,7 @@ import { addItem } from '../../redux/cart/cart.actions';
 // data received from collection preview
 const CollectionItem = ({ item, addItemToProp }) => {
   const { name, imageUrl, price } = item;
-  console.log(addItemToProp);
+  //console.log(addItemToProp);
   return (
     <div className='collection-item'>
       <div className='image' style={{ background: `url(${imageUrl})` }} />

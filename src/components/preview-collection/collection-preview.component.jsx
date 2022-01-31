@@ -5,7 +5,7 @@ import './collection-preview.style.scss';
 // Data received from shop.component
 const CollectionPreview = ({ item }) => {
   const { title, items } = item;
-  console.log(title, items);
+  //console.log(title, items);
   return (
     <div className='collection-preview'>
       <h1 className='title'>{title.toUpperCase()}</h1>

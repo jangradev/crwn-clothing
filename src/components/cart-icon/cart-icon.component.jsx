@@ -6,7 +6,7 @@ import './cart-icon.styles.scss';
 import { toggleCartHidden } from '../../redux/cart/cart.actions';
 
 const CartIcon = ({ toggleCartHiddenOnProps }) => {
-  console.log(toggleCartHiddenOnProps);
+  //console.log(toggleCartHiddenOnProps);
   return (
     <div className='cart-icon' onClick={toggleCartHiddenOnProps}>
       <ShoppingIcon className='shopping-icon' />
