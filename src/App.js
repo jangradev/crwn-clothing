@@ -9,6 +9,11 @@ import React from 'react';
 import { createUserProfileDocument } from '../src/firebase/firebase.utils';
 import { setCurrentUser } from './redux/user/user.actions';
 import { connect } from 'react-redux';
+
+import { createStructuredSelector } from 'reselect';
+import { selectCurrentUser } from './redux/user/user.selector';
+
+import Checkout from './pages/checkout/checkout.component';
 //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 class App extends React.Component {
   unsubscribedFromAuth = null;
@@ -31,19 +36,19 @@ class App extends React.Component {
         setCurrentUserOnProps(userDataFromAuthState);
       }
     });
-  }
-  //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+  } //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
   componentWillUnmount() {
     this.unsubscribedFromAuth();
     console.log('log out');
   }
   render() {
     return (
-      <div>
+      <div className='main-page'>
         <Header />
         <Switch>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
+          <Route exact path='/checkout' component={Checkout} />
           <Route
             exact
             path='/login'
@@ -55,15 +60,10 @@ class App extends React.Component {
       </div>
     );
   }
-}
-//➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-const mapStateToProps = (state) => {
-  //console.log(state);
-  return {
-    currentUserOnProps: state.user.currentUser,
-  };
-};
-
+} //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
+const mapStateToProps = createStructuredSelector({
+  currentUserOnProps: selectCurrentUser,
+});
 //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 const mapDispatchToProps = (dispatch) => ({
   setCurrentUserOnProps: (user) => dispatch(setCurrentUser(user)),
