@@ -61,8 +61,11 @@ class App extends React.Component {
     );
   }
 } //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
-const mapStateToProps = createStructuredSelector({
-  currentUserOnProps: selectCurrentUser,
+// const mapStateToProps = createStructuredSelector({
+//   currentUserOnProps: selectCurrentUser,
+// });
+const mapStateToProps = ({ user }) => ({
+  currentUserOnProps: user.currentUser,
 });
 //➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖➖
 const mapDispatchToProps = (dispatch) => ({
